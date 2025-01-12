@@ -28,3 +28,12 @@ model.fit(train_gen, validation_data=val_gen, epochs=10)
 
 # Save model
 model.save('trash_detector_model.h5')
+
+# Load the trained model for predictions
+def load_trash_model(path='trash_detector_model.h5'):
+    """Load the saved CNN model"""
+    loaded_model = tf.keras.models.load_model(path)
+    return loaded_model
+
+model = load_trash_model()
+print("Model loaded for inference.")
