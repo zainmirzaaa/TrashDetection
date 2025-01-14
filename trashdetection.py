@@ -47,3 +47,12 @@ def load_trash_model(path='trash_detector_model.h5'):
 
 model = load_trash_model()
 print("Model loaded for inference.")
+
+def predict_trash(img_path):
+    """Predict trash category for a given image"""
+    img_array = preprocess_image(img_path)
+    prediction = model.predict(img_array)
+    categories = ['plastic', 'metal', 'organic']
+    predicted_class = categories[np.argmax(prediction)]
+    return predicted_class
+
