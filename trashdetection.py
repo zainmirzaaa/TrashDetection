@@ -4,6 +4,38 @@ from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.preprocessing import image
 import numpy as np
+import random
+import json
+import time
+
+# Simulate drone positions over a grid
+def generate_drone_positions(rows=10, cols=10):
+    positions = []
+    for x in range(rows):
+        for y in range(cols):
+            positions.append({"x": x, "y": y})
+    random.shuffle(positions)
+    return positions
+
+# Save drone positions to a file
+def save_positions(positions, filename='drone_positions.json'):
+    with open(filename, 'w') as f:
+        json.dump(positions, f)
+
+# Generate and save positions
+positions = generate_drone_positions()
+save_positions(positions)
+print(f"Saved {len(positions)} drone positions to drone_positions.json")
+
+# Simulate drone capturing images (here we just simulate predictions)
+def simulate_trash_detection(positions):
+    detections = []
+    for pos in positions:
+        trash_present = random.random() > 0.5
+        category = random.choice(['plastic','metal','organic']) if trash_present else None
+        detections.append({"x": pos['x'], "y": pos['y'], "trashDetected": trash_present, "category": category})
+    return detections
+
 
 def preprocess_image(img_path):
     """Load and preprocess an image for prediction"""
