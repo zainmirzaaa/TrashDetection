@@ -88,3 +88,26 @@ def predict_trash(img_path):
     predicted_class = categories[np.argmax(prediction)]
     return predicted_class
 
+
+# Save detections to a file
+def save_detections(detections, filename='drone_detections.json'):
+    with open(filename, 'w') as f:
+        json.dump(detections, f)
+
+# Main loop to continuously simulate drone trash detection
+def main_loop():
+    positions = generate_drone_positions()
+    while True:
+        try:
+            detections = simulate_trash_detection(positions)
+            save_detections(detections)
+            print(f"Updated {len(detections)} drone detections")
+            time.sleep(2)  # simulate real-time updates
+        except KeyboardInterrupt:
+            print("Simulation stopped by user")
+            break
+
+if __name__ == "__main__":
+    main_loop()
+
+
