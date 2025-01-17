@@ -2,6 +2,21 @@
 #include <vector>
 #include <queue>
 #include <utility>
+#include <fstream>
+
+// Save drone path to a JSON file
+void savePath(const vector<pair<int,int>>& path, const string& filename="drone_positions.json") {
+    ofstream out(filename);
+    out << "[\n";
+    for(size_t i = 0; i < path.size(); ++i) {
+        auto [x, y] = path[i];
+        out << "{ \"x\": " << x << ", \"y\": " << y << "}";
+        if(i != path.size()-1) out << ",";
+        out << "\n";
+    }
+    out << "]";
+    out.close();
+}
 
 using namespace std;
 
