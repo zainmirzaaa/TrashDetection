@@ -59,3 +59,27 @@ int main() {
     frontierSearch(0,0);
     return 0;
 }
+
+vector<pair<int,int>> frontierSearchWithPath(int startX, int startY) {
+    queue<pair<int,int>> q;
+    q.push({startX, startY});
+    grid[startX][startY].visited = true;
+
+    vector<pair<int,int>> path;
+
+    while(!q.empty()) {
+        auto [x, y] = q.front(); q.pop();
+        path.push_back({x, y});
+        cout << "Drone visiting: (" << x << "," << y << ")\n";
+
+        for(auto [dx, dy] : directions) {
+            int nx = x + dx;
+            int ny = y + dy;
+            if(isValid(nx, ny)) {
+                grid[nx][ny].visited = true;
+                q.push({nx, ny});
+            }
+        }
+    }
+    return path;
+}
