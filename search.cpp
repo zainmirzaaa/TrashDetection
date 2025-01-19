@@ -3,6 +3,21 @@
 #include <queue>
 #include <utility>
 #include <fstream>
+#include <thread>
+#include <chrono>
+
+int main_loop() {
+    for(int iteration=0; iteration<3; ++iteration) {
+        initGrid();
+        auto path = frontierSearchWithPath(0,0);
+        savePath(path, "drone_positions.json");
+        cout << "Iteration " << iteration+1 << " completed. Path saved.\n";
+        std::this_thread::sleep_for(std::chrono::seconds(2));
+    }
+    cout << "Simulation loop finished.\n";
+    return 0;
+}
+
 
 // Save drone path to a JSON file
 void savePath(const vector<pair<int,int>>& path, const string& filename="drone_positions.json") {
@@ -82,4 +97,24 @@ vector<pair<int,int>> frontierSearchWithPath(int startX, int startY) {
         }
     }
     return path;
+}
+
+void initGrid() {
+    for(int i=0; i<rows; ++i) {
+        for(int j=0; j<cols; ++j) {
+            grid[i][j] = {i, j, false};
+        }
+    }
+}
+
+int main() {
+    initGrid();
+    cout << "Starting drone frontier search...\n";
+
+    auto path = frontierSearchWithPath(0,0);
+    cout << "Drone path completed. Cells visited: " << path.size() << "\n";
+
+    savePath(path);
+    cout << "Drone path saved to drone_positions.json\n";
+    return 0;
 }
