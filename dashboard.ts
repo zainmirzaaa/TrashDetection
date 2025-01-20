@@ -60,3 +60,24 @@ setInterval(() => {
     const total = droneDataBatch.length;
     console.log(`[${new Date().toLocaleTimeString()}] Total drone detections so far: ${total}`);
 }, 10000);
+
+// Track the index of the last processed detection
+let lastIndex = 0;
+
+// Print summary of new detections every 5 seconds
+setInterval(() => {
+    const newDetections = droneDataBatch.slice(lastIndex);
+    lastIndex = droneDataBatch.length;
+
+    const count = newDetections.length;
+    const trashCounts: Record<string, number> = { plastic: 0, metal: 0, organic: 0 };
+
+    newDetections.forEach(d => {
+        if (d.trashDetected && d.category) {
+            trashCounts[d.category]++;
+        }
+    });
+
+    console.log(`[${new Date().toLocaleTimeString()}] New detections: ${count}`);
+    console.log(`Plastic: ${trashCounts.plastic}, Metal: ${trashCounts.metal}, Organic: ${trashCounts.organic}`);
+}, 5000);
